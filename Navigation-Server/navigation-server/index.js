@@ -1,13 +1,14 @@
 "use strict";
 
 const Boundary = require("./Boundary.js");
+const Coordinate = require("./Coordinate.js");
 const DummyData = require("./DummyData.js");
 const Constants = require("./Constants.js");
 const redis = require("redis")
     , redisClient = redis.createClient(Constants.RedisConfig);
 
 // PubSub Subcription for OpenCvChannel
-redisClient.on("message", function (channel, message) {
+redisClient.on("message", function(channel, message) {
     console.log("Message '" + message + "' on channel '" + channel + "' arrived!")
 });
 redisClient.subscribe(Constants.OpenCvChannel);
@@ -20,18 +21,37 @@ console.log(boundary.dimensions);
 //              y: relative bottom left + height/2
 // add point at i+robotWidth until at right side;
 // ends at  x: relative bottom right - width/2
-//          y: relative bottom right + height/2 (if odd numberOfBottomPoints)
-//          y: relative top right - height/2 (if even numberOfBottomPoints)
-var bottomPoints = [];
+//          y: relative bottom right + height/2 (if odd numberOfAlleys)
+//          y: relative top right - height/2 (if even numberOfAlleys)
+var alleys = [];
 const robotWidthPixels = Constants.RobotDimensions.width * Constants.PixelsPerCentimeter;
-var numberOfBottomPoints = Math.floor(boundary.dimensions.width / robotWidthPixels);
-bottomPoints.push(robotWidthPixels / 2);
-for (var i = 1; i < numberOfBottomPoints; i++) {
-    bottomPoints.push(robotWidthPixels / 2 + robotWidthPixels*i);
-}
-bottomPoints.push(boundary.dimensions.width - robotWidthPixels / 2);
+const robotHeightPixels = Constants.RobotDimensions.height * Constants.PixelsPerCentimeter;
+var numberOfAlleys = Math.floor(boundary.dimensions.width / robotWidthPixels);
 
-console.log(bottomPoints);
+// start alley
+var alley = {
+    start: new Coordinate(robotWidthPixels / 2, robotHeightPixels / 2),
+    end: new Coordinate(robotWidthPixels / 2, boundary.dimensions.height - (robotHeightPixels / 2))
+};
+alleys.push(alley);
+
+// middle alleys
+for (var i = 1; i < numberOfAlleys; i++) {
+    alley = {
+        start: new Coordinate(robotWidthPixels / 2 + robotWidthPixels * i, robotHeightPixels / 2),
+        end: new Coordinate(robotWidthPixels / 2 + robotWidthPixels * i, boundary.dimensions.height - (robotHeightPixels / 2))
+    };
+    alleys.push(alley);
+}
+
+// end alley
+alley = {
+    start: new Coordinate(boundary.dimensions.width - robotWidthPixels / 2, robotHeightPixels / 2),
+    end: new Coordinate(boundary.dimensions.width - robotWidthPixels / 2, boundary.dimensions.height - (robotHeightPixels / 2))
+};
+alleys.push(alley);
+
+console.log(alleys);
 
 
 
