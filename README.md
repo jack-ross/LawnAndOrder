@@ -1,6 +1,26 @@
 # Capstone
 Lawn and Order - Collection of Code, Resources, Docs, and Static website for UVA ECE Capstone
 
+## Initialization
+**Prerequisite**  
+Working Redis Server on static IP that is known to all devices.  
+**1. Map/Boundary is Set**  
+User sets boundary position vectors for the work area.  
+
+**2. Robot Comes Online**  
+Once robot connects to central WiFi node, it is responsible for connecting to RedisDB and publishing 
+it's unique identifing marker (UID) and name to channel `fieldObjects`. The robot will then subscribe to a channel entitled 
+`fieldBot-<UID>`. It will recieve position vector on this channel.  
+
+**3. Navigation Server**  
+The navigation server must get from `map-configuration` to receive up to date boundary position vectors and subscribe to `system-updates` 
+to receive updates whenever the map is changed to then pull from `map-configuration`.
+Each object will come from CV server with a UID, which is read from marker on the robot. That UID will dictate which 
+channel navigation info will be published to.   
+
+**OpenCv**  
+No configuration necessary. 
+
 
 ## Communications (subject to change)
 
