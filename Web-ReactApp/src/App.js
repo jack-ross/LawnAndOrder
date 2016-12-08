@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import mqtt from 'mqtt';
 import logo from './logo.svg';
 import './App.css';
 
-import mqtt from 'mqtt';
 
-var client  = mqtt.connect('ws://localhost:11883');
+const client  = mqtt.connect('ws://localhost:11883', "WebApp");
 
 client.on('connect', function () {
   client.subscribe('cv-channel')
