@@ -4,17 +4,25 @@ const Boundary = require("./Boundary.js");
 const NavigationController = require("./NavigationController.js");
 const DummyData = require("./DummyData.js");
 const Constants = require("./Constants.js");
-const redis = require("redis")
-    , redisClient = redis.createClient(Constants.RedisConfig);
+const Robot = require("./Robot.js");
 
-// PubSub Subcription for OpenCvChannel
-redisClient.on("message", function(channel, message) {
-    console.log("Message '" + message + "' on channel '" + channel + "' arrived!")
+// launch mqtt server
+// $ /usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
+const mqtt = require('mqtt');
+const client  = mqtt.connect('mqtt://localhost');
+
+client.on('connect', function () {
+  client.subscribe('cv-channel')
+  client.publish('cv-channel', 'Hello Matt!')
 });
-redisClient.subscribe(Constants.OpenCvChannel);
+ 
+client.on('message', function (topic, message) {
+  // message is Buffer 
+  console.log(message.toString())
+});
 
 const boundary = new Boundary(DummyData.BoundaryJsonObject);
-console.log(boundary.dimensions);
+// console.log(boundary.dimensions);
 
 // array of alleys (paths robots travel)
 // starts at    x: relative bottom left + width/2
@@ -24,8 +32,17 @@ console.log(boundary.dimensions);
 //          y: relative bottom right + height/2 (if odd numberOfAlleys)
 //          y: relative top right - height/2 (if even numberOfAlleys)
 var navigationController = new NavigationController(boundary);
-
 // init
+
+var numberOfRobots = DummyData.NumberOfBots;
+
+for (var i = 0; i < numberOfRobots; i++){
+    var robot = new Robot(i);
+    navigationController.configureRobotStart(robot, 0, 1);
+    navigationController.addRobot(robot);
+}
+
+// console.log(navigationController.robots);
 
 
 

@@ -2,24 +2,24 @@
 const Coordinate = require("./Coordinate.js");
 const Constants = require("./Constants.js");
 
-class Robot {
-
-    constructor(uid) {
+class RobotObj {
+    
+    constructor() {
         this.uid = 2;
 
-        this.location = new Coordinate(-1, -1);
-        this.startingLocation = new Coordinate(-1, -1);
+        this.location = new Coordinate(-1,-1);
+        this.startingLocation = new Coordinate(-1,-1);
         this.startingAlley = 0;
         this.currentAlley = 0;
         this.endingAlley = -1;
 
-        this.goalCoordinate = new Coordinate(-1, -1);
+        this.goalCoordinate = new Coordinate(-1,-1);
 
         this.pointsTraveled = [];
 
         this.redisClient = null;
     }
-    
+
     /**
     * @param {Coordinate}   coordinate the most recent point as returned  
     *                       by the open-cv server
@@ -36,6 +36,6 @@ class Robot {
         }
         return false;        
     }
-};
+}
 
-module.exports = Robot;
+module.export = RobotObj;

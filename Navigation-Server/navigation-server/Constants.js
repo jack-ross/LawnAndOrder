@@ -1,11 +1,6 @@
 'use strict';
 
 module.exports = Object.freeze({
-    RedisConfig: {
-        host: "localhost",
-        port: 6379
-        // password: "password123"
-    },
     OpenCvChannel: 'cv-channel',
     BoundaryConfigChannel: 'map-configuration',
     SystemNotificationChannel: 'system-updates',

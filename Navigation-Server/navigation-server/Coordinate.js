@@ -12,11 +12,11 @@ class Coordinate {
         this.x = x;
         this.y = y;
 
-        this.relativeX = relativePoint ? this.x - this.relativePoint.x : null;
-        this.relativeY = relativePoint ? this.y - this.relativePoint.y : null;
+        this.relativeX = relativePoint ? this.x - this.relativePoint.x : this.x;
+        this.relativeY = relativePoint ? this.y - this.relativePoint.y : this.y;
 
         this.absoluteCoordinates = { x: this.x, y: this.y };
-        this.relativeCoordinates = relativePoint ? { x: this.relativeX, y: this.relativeY } : null;
+        this.relativeCoordinates = { x: this.relativeX, y: this.relativeY };
     }
 
     /**
@@ -24,8 +24,8 @@ class Coordinate {
     * @param {Coordinate} b the other point to be compared 
     */
     static distance(a, b) {
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
+        const dx = a.relativeX - b.relativeX;
+        const dy = a.relativeY - b.relativeY;
 
         return Math.sqrt(dx * dx + dy * dy);
     }

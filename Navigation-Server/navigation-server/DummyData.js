@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = Object.freeze({
+    NumberOfBots: 1,
     BoundaryJsonObject: {
         corners: {
             topLeft: {
