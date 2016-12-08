@@ -5,20 +5,38 @@
 .App-logo {
   animation: App-logo-spin infinite 10s linear;
   height: 40px;
+  margin-top: -5px;
 }
 
 .App-header {
   background-color: #222;
-  height: 40px;
+  height: 55px;
   padding: 5px;
   color: white;
 }
 
-.App-intro {
-  font-size: large;
+.App-header h1 {
+  margin:0;
+  font-size: 30px;
+  padding-top: 5px;
+  font-weight: 300;
 }
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.container {
+  width: 100%;
+}
+
+.left-col {
+  background-color: #222;
+  min-height: calc(100vh - 55px);
+}
+
+.right-col {
+  background-color: rgba(0,0,255,0.2);
+  min-height: calc(100vh - 55px);
 }
