@@ -1,24 +1,24 @@
 .App {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .App-logo {
   animation: App-logo-spin infinite 10s linear;
-  height: 40px;
-  margin-top: -5px;
+  height: 25px;
+  margin-top: 5px;
 }
 
 .App-header {
   background-color: #222;
-  height: 55px;
-  padding: 5px;
+  height: 65px;
+  padding: 5px 15px;
   color: white;
 }
 
 .App-header h1 {
-  margin:0;
+  margin-top: 5px;
   font-size: 30px;
-  padding-top: 5px;
+  padding-top: 0px;
   font-weight: 300;
 }
 
@@ -31,12 +31,23 @@
   width: 100%;
 }
 
-.left-col {
+.stats-col {
   background-color: #222;
-  min-height: calc(100vh - 55px);
+  min-height: calc(100vh);
+  padding: 10px 15px;
 }
 
-.right-col {
+.card {
+  margin: auto;
+}
+
+.stats-col .card {
+  max-height: 230px;
+  margin: 10px 5px;
+}
+
+.main-col {
   background-color: rgba(0,0,255,0.2);
-  min-height: calc(100vh - 55px);
+  min-height: calc(100vh);
+  box-shadow: 0px 0px 10px white;
 }
