@@ -75,3 +75,15 @@ Redis based message queue. There are three actors in the current network:
     sender: "navigation-server"
 }
 ```
+
+## WebSockets  
+
+1. install MQTT Mosquitto  
+2. modify `/usr/local/etc/mosquitto/mosquitto.conf` by adding:  
+```
+listener 1883 127.0.0.1  
+protocol mqtt  
+listener 11883 127.0.0.1  
+protocol websockets  
+```
+3. Run using `/usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf`  
