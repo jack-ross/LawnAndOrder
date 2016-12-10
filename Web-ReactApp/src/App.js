@@ -6,7 +6,7 @@ import logo from './logo.svg';
 import './App.css';
 
 
-const client = mqtt.connect('ws://localhost:11883', "WebApp");
+const client = mqtt.connect('ws://localhost:11883', {clientId: "web-app"});
 
 client.on('connect', function () {
     client.subscribe('cv-channel')
@@ -85,7 +85,6 @@ class App extends Component {
                                 </Row>
                             </Card>
                         </Row>
-                        
                         <Row>
                             <Card className="card" title="Recent Messages">
                                 <Timeline>
@@ -102,6 +101,18 @@ class App extends Component {
                                         <p>Payload</p>
                                     </Timeline.Item>
                                 </Timeline>
+                            </Card>
+                        </Row>
+                        <Row>
+                            <Card className="card" bodyStyle={{ padding: 0 }}>
+                                <Carousel autoplay dots={false}>
+                                    <div>
+                                        <Table dataSource={dataSource} columns={columns} pagination={false} />
+                                    </div>
+                                    <div>
+                                        <Table dataSource={dataSource} columns={columns} pagination={false} />
+                                    </div>
+                                </Carousel>
                             </Card>
                         </Row>
                         <Row>

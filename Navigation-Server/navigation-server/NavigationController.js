@@ -52,6 +52,7 @@ class NavigationController {
     * @return {Coordinate}   the starting Coordinate of the robot  
     */
     configureRobotStart(robot, index, robotCount) {
+        index--; //decriment index because it starts at 1;
         const numAlleys = this.alleys.length;
         robot.startingAlley = Math.ceil(numAlleys * index / robotCount);
         robot.endingAlley = (index + 1 == robotCount) ? this.alleys.length - 1 : Math.floor(numAlleys * (index + 1 / robotCount));
@@ -62,9 +63,20 @@ class NavigationController {
         const startingAlley = this.alleys[robot.startingAlley];
         if (startingAlley) {
             robot.startingLocation = startingAlley.start;
-            robot.goalCoordinate = startingAlley.end;
+            robot.goalCoordinate = robot.startingLocation;
         }
         robot.currentAlley = robot.startingAlley;
+    };
+    
+    /**
+    * @param {Number}   uid   unique identifier for robot 
+    * @return {Robot}   the found robot  
+    */
+    getRobotForUID(uid) {
+        for (var i = 0; i < this.robots.length; i++) {
+            if (this.robots[i].uid == uid) return this.robots[i];
+        }
+        return null;
     };
 
 }

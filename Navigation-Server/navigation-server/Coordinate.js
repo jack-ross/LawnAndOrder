@@ -30,6 +30,14 @@ class Coordinate {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    /**
+    * @param {Coordinate} a a point to be compared
+    * @param {Coordinate} b the other point to be compared 
+    */
+    static angle(a, b) {
+        return Math.atan2(b.relativeY- a.relativeY, b.relativeX - a.relativeX) * 180 / Math.PI;
+    }
+
     toString() {
         if (this.relativePoint) {
             return '"' + {
