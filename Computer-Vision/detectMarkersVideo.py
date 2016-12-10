@@ -69,13 +69,28 @@ def getJsonMessage(markersArray):
     msg = {"message": {"objects": objectsList},"time": curTime,"sender": sender}
     return msg
 
+
+def on_connect(client, userdata, flags, rc):
+    global loop_flag
+    print("HEY")
+    loop_flag=0
 '''
 ---------------------Main start-------------------------
 '''
 if __name__ == "__main__":
     #------------Init redis connection------------
     mqttc = mqtt.Client("python_pub")
-    #mqttc.connect("192.168.1.100", 1883)
+    mqttc.connect("::1", 1883, 60)
+    # mqttc.onconnect=on_connect
+    mqttc.loop(2)
+
+    # loop_flag=1
+    # counter=0
+    # while loop_flag == 1:
+    #     print(counter)
+    #     time.sleep(.01)
+    #     counter+=1
+
     channelName = "cv-channel"  
 
     # the publish method returns the number matching channel and pattern
@@ -124,7 +139,8 @@ if __name__ == "__main__":
             #may manipulate more
             frame = aruco.drawDetectedMarkers(frame, corners, ids)
             #publish to redis channel
-            #mqttc.publish(channelName, str(markerJsonMsg))
+            mqttc.publish(channelName, str(markerJsonMsg))
+            mqttc.loop(2)
             print(markerJsonMsg)
 
                 

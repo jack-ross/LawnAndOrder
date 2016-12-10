@@ -21,7 +21,7 @@ client.on('message', function (topic, message) {
     // message is Buffer 
     console.log("received message");
     console.log(message.toString());
-    handleOpenCV(message);
+    handleOpenCV(message.toString());
 });
 
 const boundary = new Boundary(DummyData.BoundaryJsonObject);
@@ -46,7 +46,9 @@ for (var i = 1; i <= numberOfRobots; i++) {
 
 function handleOpenCV(payload) {
 
-    msg = payload || {
+    var regex = new RegExp("'", 'g');
+    payload = payload.replace(regex, '"');
+    var msg = JSON.parse(payload) || {
         'message':
         {
             'objects':
@@ -85,7 +87,7 @@ function handleOpenCV(payload) {
         robotInSytem.addPointTraveled(robotCurrentCoordinate);
 
         // calculate correction
-        var distanceToGoal = robotInSytem.DistanceToGoal;
+        var distanceToGoal = robotInSytem.DistanceToGoal / Constants.PixelsPerCentimeter;
         var angleToGoal = robotInSytem.AngleToGoal; // zero - 360 degrees
         
         // positive angle, robot goes right
@@ -99,6 +101,8 @@ function handleOpenCV(payload) {
         }
 
         var robotChannel = "robot-" + robotInField.uid;
+        console.log("publishing to " + robotChannel);
+        console.log(JSON.stringify(messageToRobot));
         client.publish(robotChannel, JSON.stringify(messageToRobot));
 
     }
