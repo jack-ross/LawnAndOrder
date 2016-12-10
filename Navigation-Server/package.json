@@ -4,7 +4,9 @@
   "description": "Navigation server to send messages to robots based on CV coordinates",
   "main": "navigation-server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-mqtt": "/usr/local/sbin/mosquitto -c ../mosquitto.conf",
+    "start":"npm run start-mqtt && node ./navigation-server/index.js"
   },
   "author": "",
   "license": "ISC",

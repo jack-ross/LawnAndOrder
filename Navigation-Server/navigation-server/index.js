@@ -15,7 +15,6 @@ var _this = this;
 
 client.on('connect', function () {
     client.subscribe('cv-channel')
-    client.publish('cv-channel', 'Hello Matt!')
 });
 
 client.on('message', function (topic, message) {
@@ -45,9 +44,9 @@ for (var i = 1; i <= numberOfRobots; i++) {
     navigationController.addRobot(robot);
 }
 
-function handleOpenCV(msg) {
+function handleOpenCV(payload) {
 
-    msg = {
+    msg = payload || {
         'message':
         {
             'objects':
