@@ -4,6 +4,7 @@ import cv2.aruco as aruco
 import math
 import time
 import json
+import paho.mqtt.client as mqtt
 
 class MarkerMetaData:
     def __init__(self, id, center, rotation):
@@ -60,7 +61,7 @@ def getJsonMessage(markersArray):
         centerDict["x"] =  marker.x
         centerDict["y"] = marker.y
         objectDict["position"] = centerDict
-        objectDict["angle"] marker.rotation
+        objectDict["angle"] = marker.rotation
         objectsList.append(objectDict)
 
     curTime = time.time()
@@ -72,47 +73,71 @@ def getJsonMessage(markersArray):
 ---------------------Main start-------------------------
 '''
 if __name__ == "__main__":
+    #------------Init redis connection------------
+    mqttc = mqtt.Client("python_pub")
+    #mqttc.connect("192.168.1.100", 1883)
+    channelName = "cv-channel"  
+
+    # the publish method returns the number matching channel and pattern
+    # subscriptions. 'my-first-channel' matches both the 'my-first-channel'
+    # subscription and the 'my-*' pattern subscription, so this message will
+    # be delivered to 2 channels/patterns
+    #r.publish('my-first-channel', 'some data')
+
+
+    ##------------Init computer vison------------
     cap = cv2.VideoCapture(0)
-    #cap.set(5, 1);
+
     while(True):
     # Capture frame-by-frame
         ret, frame = cap.read()
-        #frame = cv2.imread("test_marker.jpg", 1)
-        #print(frame.shape) #480x640
+        frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
+        
         # Our operations on the frame come here
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
         parameters =  aruco.DetectorParameters_create()
 
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
-        print(corners, ids)
+        #print(corners, ids)
+        if(ids is not None):
+            #store the markers found in a list of MarkerMetaData objects 
+            markers = []
+            for i in xrange(len(ids[0])):
+                curId = ids[0][i]
+                if(curId != 1 and curId != 49):
+                    continue
+                curCorners = corners[0][i]
+                rotation = round(getRotation(curCorners), 3)
+                center = getCenter(curCorners)
+                markerData = MarkerMetaData(curId, center, rotation)
+                markers.append(markerData)
 
-        #store the markers found in a list of MarkerMetaData objects 
-        markers = []
-        for i in xrange(len(ids[0])):
-            curId = ids[0][i]
-            curCorners = corners[0][i]
-            rotation = int(getRotation(curCorners))
-            center = getCenter(curCorners)
-            markerData = MarkerMetaData(curId, center, rotation)
-            markers.append(markerData)
-            
-        #only go through the drawing if we found any markers
-        if(len(markers) > 0):
-            markerJsonmsg = getJsonMessage(markers)
-            print(getJsonMessage(curId, center, rotation))
+                roationText = "Rotation: "+ str(rotation)
+                cv2.putText(frame, roationText, center, cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2)
+
+            #only go through the drawing if we found any markers
+            #if(len(markers) > 0):
+            markerJsonMsg = getJsonMessage(markers)
+            #print(curId, center, rotation)
             #now have a list of all the markers in the frame
             #may manipulate more
             frame = aruco.drawDetectedMarkers(frame, corners, ids)
+            #publish to redis channel
+            #mqttc.publish(channelName, str(markerJsonMsg))
+            print(markerJsonMsg)
 
-            roationText = "Rotaion: "+ str(rotation)
-            cv2.putText(frame, roationText, center, cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2)
-
+                
         #print(rejectedImgPoints)
         # Display the resulting frame
         cv2.imshow('frame',frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
+
+        #check for escape
+        if(cv2.waitKey(500) == 27):
             break
+
             
     # When everything done, release the capture
     cap.release()
