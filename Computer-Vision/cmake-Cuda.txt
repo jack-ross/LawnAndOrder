@@ -1,0 +1,34 @@
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D OPENCV_EXTRA_MODULES_PATH=/Users/JackRoss/Git/School/Capstone/opencv_contrib/modules \
+    -D PYTHON2_PACKAGES_PATH=/Users/JackRoss/Git/Virtualenvs/cv/lib/python2.7/site-packages \
+    -D PYTHON2_LIBRARY=/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/bin \
+    -D PYTHON2_INCLUDE_DIR=/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/include/python2.7/ \
+    -D PYTHON2_EXECUTABLE=/Users/JackRoss/Git/Virtualenvs/cv/bin/python \
+    -D BUILD_opencv_python2=ON \
+    -D BUILD_opencv_python3=OFF \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D WITH_CUDA=ON \
+    -D ENABLE_FAST_MATH=1 \
+    -D CUDA_FAST_MATH=1 \
+    -D WITH_CUBLAS=1 \
+    -D BUILD_EXAMPLES=ON ..
+
+//without cude
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D OPENCV_EXTRA_MODULES_PATH=/Users/JackRoss/Git/School/Capstone/opencv_contrib/modules \
+    -D PYTHON2_PACKAGES_PATH=/Users/JackRoss/Git/Virtualenvs/cv/lib/python2.7/site-packages \
+    -D PYTHON2_LIBRARY=/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/bin \
+    -D PYTHON2_INCLUDE_DIR=/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/include/python2.7/ \
+    -D PYTHON2_EXECUTABLE=/Users/JackRoss/Git/Virtualenvs/cv/bin/python \
+    -D BUILD_opencv_python2=ON \
+    -D BUILD_opencv_python3=OFF \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D WITH_CUDA=OFF \
+    -D BUILD_EXAMPLES=ON ..
+
+// link for cuda
+-D CUDA_HOST_COMPILER=/usr/bin/clang++

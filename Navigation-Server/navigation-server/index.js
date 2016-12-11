@@ -110,9 +110,7 @@ function handleOpenCV(payload) {
             retain: true
         }
         client.publish(robotChannel, JSON.stringify(messageToRobot), options);
-
     }
-
 }
 
 function checkPermissionToMove(){

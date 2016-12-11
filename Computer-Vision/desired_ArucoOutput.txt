@@ -1,0 +1,109 @@
+Help on module cv2.aruco in cv2:
+
+NAME
+    cv2.aruco
+
+FILE
+    (built-in)
+
+FUNCTIONS
+    Board_create(...)
+        Board_create(objPoints, dictionary, ids) -> retval
+
+    CharucoBoard_create(...)
+        CharucoBoard_create(squaresX, squaresY, squareLength, markerLength, dictionary) -> retval
+
+    DetectorParameters_create(...)
+        DetectorParameters_create() -> retval
+
+    Dictionary_create(...)
+        Dictionary_create(nMarkers, markerSize) -> retval
+
+    Dictionary_create_from(...)
+        Dictionary_create_from(nMarkers, markerSize, baseDictionary) -> retval
+
+    Dictionary_get(...)
+        Dictionary_get(dict) -> retval
+
+    GridBoard_create(...)
+        GridBoard_create(markersX, markersY, markerLength, markerSeparation, dictionary[, firstMarker]) -> retval
+
+    calibrateCameraAruco(...)
+        calibrateCameraAruco(corners, ids, counter, board, imageSize, cameraMatrix, distCoeffs[, rvecs[, tvecs[, flags[, criteria]]]]) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs
+
+    calibrateCameraArucoExtended(...)
+        calibrateCameraArucoExtended(corners, ids, counter, board, imageSize, cameraMatrix, distCoeffs[, rvecs[, tvecs[, stdDeviationsIntrinsics[, stdDeviationsExtrinsics[, perViewErrors[, flags[, criteria]]]]]]]) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, stdDeviationsIntrinsics, stdDeviationsExtrinsics, perViewErrors
+
+    calibrateCameraCharuco(...)
+        calibrateCameraCharuco(charucoCorners, charucoIds, board, imageSize, cameraMatrix, distCoeffs[, rvecs[, tvecs[, flags[, criteria]]]]) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs
+
+    calibrateCameraCharucoExtended(...)
+        calibrateCameraCharucoExtended(charucoCorners, charucoIds, board, imageSize, cameraMatrix, distCoeffs[, rvecs[, tvecs[, stdDeviationsIntrinsics[, stdDeviationsExtrinsics[, perViewErrors[, flags[, criteria]]]]]]]) -> retval, cameraMatrix, distCoeffs, rvecs, tvecs, stdDeviationsIntrinsics, stdDeviationsExtrinsics, perViewErrors
+
+    custom_dictionary(...)
+        custom_dictionary(nMarkers, markerSize) -> retval
+
+    custom_dictionary_from(...)
+        custom_dictionary_from(nMarkers, markerSize, baseDictionary) -> retval
+
+    detectCharucoDiamond(...)
+        detectCharucoDiamond(image, markerCorners, markerIds, squareMarkerLengthRate[, diamondCorners[, diamondIds[, cameraMatrix[, distCoeffs]]]]) -> diamondCorners, diamondIds
+
+    detectMarkers(...)
+        detectMarkers(image, dictionary[, corners[, ids[, parameters[, rejectedImgPoints]]]]) -> corners, ids, rejectedImgPoints
+
+    drawAxis(...)
+        drawAxis(image, cameraMatrix, distCoeffs, rvec, tvec, length) -> image
+
+    drawDetectedCornersCharuco(...)
+        drawDetectedCornersCharuco(image, charucoCorners[, charucoIds[, cornerColor]]) -> image
+
+    drawDetectedDiamonds(...)
+        drawDetectedDiamonds(image, diamondCorners[, diamondIds[, borderColor]]) -> image
+
+    drawDetectedMarkers(...)
+        drawDetectedMarkers(image, corners[, ids[, borderColor]]) -> image
+
+    drawMarker(...)
+        drawMarker(dictionary, id, sidePixels[, img[, borderBits]]) -> img
+
+    drawPlanarBoard(...)
+        drawPlanarBoard(board, outSize[, img[, marginSize[, borderBits]]]) -> img
+
+    estimatePoseBoard(...)
+        estimatePoseBoard(corners, ids, board, cameraMatrix, distCoeffs[, rvec[, tvec]]) -> retval, rvec, tvec
+
+    estimatePoseCharucoBoard(...)
+        estimatePoseCharucoBoard(charucoCorners, charucoIds, board, cameraMatrix, distCoeffs[, rvec[, tvec]]) -> retval, rvec, tvec
+
+    estimatePoseSingleMarkers(...)
+        estimatePoseSingleMarkers(corners, markerLength, cameraMatrix, distCoeffs[, rvecs[, tvecs]]) -> rvecs, tvecs
+
+    getPredefinedDictionary(...)
+        getPredefinedDictionary(dict) -> retval
+
+    interpolateCornersCharuco(...)
+        interpolateCornersCharuco(markerCorners, markerIds, image, board[, charucoCorners[, charucoIds[, cameraMatrix[, distCoeffs[, minMarkers]]]]]) -> retval, charucoCorners, charucoIds
+
+    refineDetectedMarkers(...)
+        refineDetectedMarkers(image, board, detectedCorners, detectedIds, rejectedCorners[, cameraMatrix[, distCoeffs[, minRepDistance[, errorCorrectionRate[, checkAllOrders[, recoveredIdxs[, parameters]]]]]]]) -> detectedCorners, detectedIds, rejectedCorners, recoveredIdxs
+
+DATA
+    DICT_4X4_100 = 1
+    DICT_4X4_1000 = 3
+    DICT_4X4_250 = 2
+    DICT_4X4_50 = 0
+    DICT_5X5_100 = 5
+    DICT_5X5_1000 = 7
+    DICT_5X5_250 = 6
+    DICT_5X5_50 = 4
+    DICT_6X6_100 = 9
+    DICT_6X6_1000 = 11
+    DICT_6X6_250 = 10
+    DICT_6X6_50 = 8
+    DICT_7X7_100 = 13
+    DICT_7X7_1000 = 15
+    DICT_7X7_250 = 14
+    DICT_7X7_50 = 12
+    DICT_ARUCO_ORIGINAL = 16
+
