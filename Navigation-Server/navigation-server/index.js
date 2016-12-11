@@ -2,7 +2,6 @@
 
 const Boundary = require("./Boundary.js");
 const NavigationController = require("./NavigationController.js");
-const DummyData = require("./DummyData.js");
 const Constants = require("./Constants.js");
 const Coordinate = require("./Coordinate.js");
 const Robot = require("./Robot.js");
@@ -26,7 +25,7 @@ client.on('message', function (topic, message) {
     // handleOpenCV(message.toString());
 });
 
-const boundary = new Boundary(DummyData.BoundaryJsonObject);
+const boundary = new Boundary(Constants.BoundaryJsonObject);
 // console.log(boundary.dimensions);
 
 // array of alleys (paths robots travel)
@@ -37,12 +36,15 @@ const boundary = new Boundary(DummyData.BoundaryJsonObject);
 //          y: relative bottom right + height/2 (if odd numberOfAlleys)
 //          y: relative top right - height/2 (if even numberOfAlleys)
 var navigationController = new NavigationController(boundary);
-var numberOfRobots = DummyData.NumberOfBots;
+var numberOfRobots = Constants.NumberOfBots;
 
 // configure robots for starting
 for (var i = 1; i <= numberOfRobots; i++) {
-    var robot = new Robot(i);
-    navigationController.configureRobotStart(robot, 0, 1);
+    var robot = new Robot(i, navigationController);
+    /* the robot to be configured. 
+    *  the relative index of the robot (i.e bot one will work most left section, etc) 
+    *  the total number of robots in the field */ 
+    navigationController.configureRobotStart(robot, i-1, numberOfRobots);
     navigationController.addRobot(robot);
 }
 
@@ -85,11 +87,11 @@ function handleOpenCV(payload) {
         var robotInSytem = navigationController.getRobotForUID(robotInField.uid);
 
         // add this current point to robots paths
-        robotInSytem.location = robotCurrentCoordinate;
+        robotInSytem.updateLocation(robotCurrentCoordinate);
         robotInSytem.addPointTraveled(robotCurrentCoordinate);
 
         // calculate correction
-        var distanceToGoal = robotInSytem.DistanceToGoal / Constants.PixelsPerCentimeter;
+        var distanceToGoal = robotInSytem.DistanceToGoal;
         var angleToGoal = robotInSytem.AngleToGoal; // zero - 360 degrees
 
         // positive angle, robot goes right
