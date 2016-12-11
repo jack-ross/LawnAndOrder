@@ -10,18 +10,20 @@ const Robot = require("./Robot.js");
 // launch mqtt server
 // $ /usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
 const mqtt = require('mqtt');
-const client = mqtt.connect('mqtt://localhost', {clientId: "navigation-server"});
+const client = mqtt.connect('mqtt://localhost', { clientId: "navigation-server" });
 var _this = this;
 
 client.on('connect', function () {
-    client.subscribe('cv-channel')
+    client.subscribe('cv-channel');
+    client.subscribe('robot-1');
+    publishShit();
 });
 
 client.on('message', function (topic, message) {
     // message is Buffer 
     console.log("received message");
     console.log(message.toString());
-    handleOpenCV(message.toString());
+    // handleOpenCV(message.toString());
 });
 
 const boundary = new Boundary(DummyData.BoundaryJsonObject);
@@ -62,8 +64,8 @@ function handleOpenCV(payload) {
     };
 
     var objects = msg.message.objects;
-    
-    
+
+
     var robotObjects = [];
     var fiducial; // coordiante
     // parse objects to robots and the single fidicual
@@ -77,7 +79,7 @@ function handleOpenCV(payload) {
     }
 
     // calculate robot positions relative to fidicual
-    for(var i = 0; i < robotObjects.length; i++) {
+    for (var i = 0; i < robotObjects.length; i++) {
         var robotInField = robotObjects[i];
         var robotCurrentCoordinate = new Coordinate(robotInField.position.x, robotInField.position.y, fiducial);
         var robotInSytem = navigationController.getRobotForUID(robotInField.uid);
@@ -89,7 +91,7 @@ function handleOpenCV(payload) {
         // calculate correction
         var distanceToGoal = robotInSytem.DistanceToGoal / Constants.PixelsPerCentimeter;
         var angleToGoal = robotInSytem.AngleToGoal; // zero - 360 degrees
-        
+
         // positive angle, robot goes right
         // negative angle, robot goes left
         var robotRelativeAngleToGoal = angleToGoal - robotInField.angle;
@@ -97,17 +99,22 @@ function handleOpenCV(payload) {
         var messageToRobot = {
             "distanceToGoal": distanceToGoal,
             "angleToGoal": robotRelativeAngleToGoal,
+            "permissionToMove": checkPermissionToMove(),
             "time": Date.now()
         }
 
         var robotChannel = "robot-" + robotInField.uid;
         console.log("publishing to " + robotChannel);
         console.log(JSON.stringify(messageToRobot));
-        client.publish(robotChannel, JSON.stringify(messageToRobot));
+        var options = {
+            retain: true
+        }
+        client.publish(robotChannel, JSON.stringify(messageToRobot), options);
 
     }
 
 }
 
-
-
+function checkPermissionToMove(){
+    return true;
+}

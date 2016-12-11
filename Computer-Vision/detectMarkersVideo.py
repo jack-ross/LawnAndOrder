@@ -101,15 +101,34 @@ if __name__ == "__main__":
 
 
     ##------------Init computer vison------------
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     while(True):
     # Capture frame-by-frame
         ret, frame = cap.read()
-        frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
+        # frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
+
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+        # frame = clahe.apply(frame)
+
+        # # Parameters for manipulating image data
+        # maxIntensity = 255.0
+        # phi = 1
+        # theta = 1
         
+        # # Decrease intensity such that
+        # # dark pixels become much darker, 
+        # # bright pixels become slightly dark 
+        # for i in xrange(0, frame[1][0]):
+        #     frame[i][0] = (maxIntensity/phi)*(frame[i][0]/(maxIntensity/theta))**2
+        
+
+
         # Our operations on the frame come here
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # apply adaptive histogram
+        gray = clahe.apply(gray)
+        frame = gray
         aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
         parameters =  aruco.DetectorParameters_create()
 
@@ -118,7 +137,7 @@ if __name__ == "__main__":
         if(ids is not None):
             #store the markers found in a list of MarkerMetaData objects 
             markers = []
-            for i in xrange(len(ids[0])):
+            for i in xrange(len(ids)):
                 curId = ids[i][0]
                 if(curId != 1 and curId != 49 and curId != 0):
                     continue
@@ -151,7 +170,7 @@ if __name__ == "__main__":
         #     break
 
         #check for escape
-        if(cv2.waitKey(300) == 27):
+        if(cv2.waitKey(100) == 27):
             break
 
             
