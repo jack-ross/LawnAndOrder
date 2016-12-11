@@ -11,12 +11,12 @@ import cv2.aruco as aruco
 '''
 
 
-aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
+aruco_dict = aruco.custom_dictionary(3,4)#Dictionary_get(aruco.DICT_4X4_50)
 print(aruco_dict)
 # second parameter is id number
 # last parameter is total image size
-img = aruco.drawMarker(aruco_dict, 49, 700)
-cv2.imwrite("test_marker.jpg", img)
+img = aruco.drawMarker(aruco_dict, 2, 600)
+cv2.imwrite("new_2_small.jpg", img)
 
 cv2.imshow('frame',img)
 cv2.waitKey(0)

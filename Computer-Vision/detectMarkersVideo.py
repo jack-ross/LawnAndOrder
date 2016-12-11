@@ -80,9 +80,9 @@ def on_connect(client, userdata, flags, rc):
 if __name__ == "__main__":
     #------------Init redis connection------------
     mqttc = mqtt.Client("python_pub")
-    mqttc.connect("::1", 1883, 60)
-    # mqttc.onconnect=on_connect
-    mqttc.loop(2)
+    #mqttc.connect("::1", 1883, 60)
+    #mqttc.onconnect=on_connect
+    #mqttc.loop(2)
 
     # loop_flag=1
     # counter=0
@@ -119,10 +119,10 @@ if __name__ == "__main__":
             #store the markers found in a list of MarkerMetaData objects 
             markers = []
             for i in xrange(len(ids[0])):
-                curId = ids[0][i]
-                if(curId != 1 and curId != 49):
+                curId = ids[i][0]
+                if(curId != 1 and curId != 49 and curId != 0):
                     continue
-                curCorners = corners[0][i]
+                curCorners = corners[i][0]
                 rotation = round(getRotation(curCorners), 3)
                 center = getCenter(curCorners)
                 markerData = MarkerMetaData(curId, center, rotation)
@@ -130,18 +130,18 @@ if __name__ == "__main__":
 
                 roationText = "Rotation: "+ str(rotation)
                 cv2.putText(frame, roationText, center, cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2)
-
-            #only go through the drawing if we found any markers
-            #if(len(markers) > 0):
-            markerJsonMsg = getJsonMessage(markers)
-            #print(curId, center, rotation)
-            #now have a list of all the markers in the frame
-            #may manipulate more
-            frame = aruco.drawDetectedMarkers(frame, corners, ids)
-            #publish to redis channel
-            mqttc.publish(channelName, str(markerJsonMsg))
-            mqttc.loop(2)
-            print(markerJsonMsg)
+            if(len(markers) > 0):
+                #only go through the drawing if we found any markers
+                #if(len(markers) > 0):
+                markerJsonMsg = getJsonMessage(markers)
+                #print(curId, center, rotation)
+                #now have a list of all the markers in the frame
+                #may manipulate more
+                frame = aruco.drawDetectedMarkers(frame, corners, ids)
+                #publish to redis channel
+                mqttc.publish(channelName, str(markerJsonMsg))
+                mqttc.loop(2)
+                print(markerJsonMsg)
 
                 
         #print(rejectedImgPoints)
@@ -151,7 +151,7 @@ if __name__ == "__main__":
         #     break
 
         #check for escape
-        if(cv2.waitKey(500) == 27):
+        if(cv2.waitKey(300) == 27):
             break
 
             
