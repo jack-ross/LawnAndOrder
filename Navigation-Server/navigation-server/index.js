@@ -35,6 +35,12 @@ client.on('message', function (topic, message) {
         // console.log('\n');
         // console.log("received message for topic: " + topic);
         // console.log(message.toString());
+        sendMessageOnDelay();
+    }
+
+});
+
+function sendMessageOnDelay() {
         console.log('tyring to send message: ' + messageToRobot.time);
         if (messageToRobot.time != lastMessageSent) {
 
@@ -51,20 +57,6 @@ client.on('message', function (topic, message) {
         } else {
             setTimeout(sendMessageOnDelay, 100);
         }
-    }
-
-});
-
-function sendMessageOnDelay() {
-    var robotChannel = "robot-" + 1;//robotInField.uid;
-    console.log("publishing to " + robotChannel);
-    console.log(JSON.stringify(messageToRobot));
-    console.log('\n');
-    var options = {
-        retain: false
-    }
-    client.publish(robotChannel, JSON.stringify(messageToRobot), options);
-    lastMessageSent = messageToRobot.time;
 }
 
 const boundary = new Boundary(Constants.BoundaryJsonObject);

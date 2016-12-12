@@ -142,7 +142,7 @@ if __name__ == "__main__":
         # apply adaptive histogram
         # gray = clahe.apply(gray)
         gray = cv2.equalizeHist(gray)
-        frame = gray
+        # frame = gray
         aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
         parameters =  aruco.DetectorParameters_create()
 
@@ -165,15 +165,15 @@ if __name__ == "__main__":
                 cv2.putText(frame, roationText, center, cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2)
                 
                 if curId == 0:
-                    xText = "GOAL!"
-                    textCenter = (int(center[0] + globTuple[0]), int(center[1]-  globTuple[1]))
+                    xText = "o"
+                    textCenter = (int(center[0] + globTuple[0] - 20), int(center[1]-  globTuple[1]))
                     print("text center")
                     print(textCenter)
                     print("fiducial center")
                     print(center)
                     print("globTuple center")
                     print(globTuple)
-                    cv2.putText(frame, xText, textCenter, cv2.FONT_HERSHEY_SIMPLEX, 2,(0,0,255),5)
+                    cv2.putText(frame, xText, textCenter, cv2.FONT_HERSHEY_SIMPLEX, 2,(0,255,0),25)
 
             if(len(markers) > 0):
                 #only go through the drawing if we found any markers
