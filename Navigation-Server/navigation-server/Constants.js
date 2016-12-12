@@ -5,35 +5,36 @@ module.exports = Object.freeze({
     OpenCvChannel: 'cv-channel',
     BoundaryConfigChannel: 'map-configuration',
     SystemNotificationChannel: 'system-updates',
-    PixelsPerCentimeter: 1.0,
+    PixelsPerCentimeter: 5,
     RobotDimensions: {
         width: 22.86,
         height: 20.32
     },
-    AllowedDistanceErrorCms: 8,
+    AllowedDistanceErrorCms: 14,
+    CourseWidth: 1.7,
     NumberOfBots: 1,
     BoundaryJsonObject: {
         corners: {
             topLeft: {
                 x: 10,
-                y: 300
+                y: 700
             },
             bottomLeft: {
                 x: 10,
-                y: 10
+                y: 100
             },
             topRight: {
                 x: 600,
-                y: 300
+                y: 700
             },
             bottomRight: {
                 x: 600,
-                y: 0
+                y: 100
             }
         },
         mapFidicual: {
-            x: 10,
-            y: 10
+            x: 1,
+            y: 1
         }
     }
 });

@@ -53,11 +53,13 @@ class Robot {
             // if was not changing alleys, it has reached end of alley and
             // must set next alley as goal
             if (!this.changingAlleys) {
-                console.log("about to turn, updating location");
+                console.log("*** about to turn, updating location ***");
                 const nextAlleyId = this.currentAlley + 1;
 
-                if (nextAlleyId > this.endingAlley.id) {
+                if (nextAlleyId > this.endingAlley) {
+                    console.log("*** JOB COMPLETE ***");
                     this.jobComplete = true;
+                    this.start();
                     return false;
                 }
                 var nextAlley = this.navigationController.alleys[nextAlleyId];
@@ -76,7 +78,7 @@ class Robot {
             }
             // else robot just reached the start of its alley, goal is the end
             else {
-                console.log("start of alley, updating location");
+                console.log("*** start of alley, updating location ***");
                 if (this.startedAtBottom) {
                     this.goalCoordinate = this.navigationController.alleys[this.currentAlley].end;
                 } else {
@@ -84,6 +86,9 @@ class Robot {
                 }
                 this.changingAlleys = false;
             }
+
+            console.log("Changed goalCoordinate to");
+            console.log(this.goalCoordinate);
         }
         return true;
     }

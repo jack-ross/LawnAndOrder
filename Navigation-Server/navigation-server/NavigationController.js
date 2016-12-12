@@ -10,25 +10,33 @@ class NavigationController {
 
         const robotWidthPixels = Constants.RobotDimensions.width * Constants.PixelsPerCentimeter;
         const robotHeightPixels = Constants.RobotDimensions.height * Constants.PixelsPerCentimeter;
-        var numberOfAlleys = Math.floor(boundary.dimensions.width / robotWidthPixels);
+        var numberOfAlleys = Math.floor(boundary.dimensions.width / (robotWidthPixels*Constants.CourseWidth));
+        
+        var yOffest = boundary.relativeCorners.bottomLeft.y;
+        var xOffest = boundary.relativeCorners.bottomLeft.y;
+
+        console.log("yOffest " + yOffest);
+        console.log("numberOfAlleys " + numberOfAlleys);
+
+
         this.alleys = [];
         // start alley
-        var start = new Coordinate(robotWidthPixels / 2, robotHeightPixels / 2, boundary.mapFidicual);
-        var end = new Coordinate(robotWidthPixels / 2, boundary.dimensions.height - (robotHeightPixels / 2), boundary.mapFidicual);
+        var start = new Coordinate(robotWidthPixels / 2, robotHeightPixels / 2 + yOffest, boundary.mapFidicual);
+        var end = new Coordinate(robotWidthPixels / 2, yOffest + boundary.dimensions.height - (robotHeightPixels / 2), boundary.mapFidicual);
         var alley = new Alley(0, start, end);
         this.alleys.push(alley);
 
         // middle alleys
         for (var i = 1; i < numberOfAlleys; i++) {
-            start = new Coordinate(robotWidthPixels / 2 + robotWidthPixels * i, robotHeightPixels / 2, boundary.mapFidicual);
-            end = new Coordinate(robotWidthPixels / 2 + robotWidthPixels * i, boundary.dimensions.height - (robotHeightPixels / 2), boundary.mapFidicual);
+            start = new Coordinate(robotWidthPixels / 2 + robotWidthPixels*Constants.CourseWidth * i, yOffest + robotHeightPixels / 2, boundary.mapFidicual);
+            end = new Coordinate(robotWidthPixels / 2 + robotWidthPixels*Constants.CourseWidth * i, yOffest + boundary.dimensions.height - (robotHeightPixels / 2), boundary.mapFidicual);
             alley = new Alley(i, start, end);
             this.alleys.push(alley);
         }
 
         // end alley
-        start = new Coordinate(boundary.dimensions.width - robotWidthPixels / 2, robotHeightPixels / 2, boundary.mapFidicual);
-        end = new Coordinate(boundary.dimensions.width - robotWidthPixels / 2, boundary.dimensions.height - (robotHeightPixels / 2), boundary.mapFidicual);
+        start = new Coordinate(boundary.dimensions.width - robotWidthPixels / 2, yOffest + robotHeightPixels / 2, boundary.mapFidicual);
+        end = new Coordinate(boundary.dimensions.width - robotWidthPixels / 2, yOffest + boundary.dimensions.height - (robotHeightPixels / 2), boundary.mapFidicual);
         alley = new Alley(numberOfAlleys, start, end);
         this.alleys.push(alley);
 
