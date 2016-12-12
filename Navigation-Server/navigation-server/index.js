@@ -119,7 +119,7 @@ function handleOpenCV(payload) {
         var robotFieldAngleAdjusted = (-robotInField.angle + 90) 
 
 
-        var robotRelativeAngleToGoal = robotFieldAngleAdjusted - angleToGoal;
+        var robotRelativeAngleToGoal =  angleToGoal - robotFieldAngleAdjusted;
 
         if (robotRelativeAngleToGoal < -180) robotRelativeAngleToGoal += 360;
         if (robotRelativeAngleToGoal > 180) robotRelativeAngleToGoal -= 360;

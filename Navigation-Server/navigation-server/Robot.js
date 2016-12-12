@@ -50,11 +50,10 @@ class Robot {
         // check if robot is at Goal location and update
         if (this.DistanceToGoalCms < Constants.AllowedDistanceErrorCms) {
 
-            console.log("updating location");
-
             // if was not changing alleys, it has reached end of alley and
             // must set next alley as goal
             if (!this.changingAlleys) {
+                console.log("about to turn, updating location");
                 const nextAlleyId = this.currentAlley + 1;
 
                 if (nextAlleyId > this.endingAlley.id) {
@@ -62,7 +61,7 @@ class Robot {
                     return false;
                 }
                 var nextAlley = this.navigationController.alleys[nextAlleyId];
-                this.currentAlley = nextAlley;
+                this.currentAlley = nextAlleyId;
 
                 // if finished at the top (end) of an alley, must start at
                 // the top (end) of the nextAlley
@@ -73,14 +72,17 @@ class Robot {
                     this.goalCoordinate = nextAlley.start;
                     this.startedAtBottom = true;
                 }
+                this.changingAlleys = true;
             }
             // else robot just reached the start of its alley, goal is the end
             else {
+                console.log("start of alley, updating location");
                 if (this.startedAtBottom) {
                     this.goalCoordinate = this.navigationController.alleys[this.currentAlley].end;
                 } else {
                     this.goalCoordinate = this.navigationController.alleys[this.currentAlley].start;
                 }
+                this.changingAlleys = false;
             }
         }
         return true;
