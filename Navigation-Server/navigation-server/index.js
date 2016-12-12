@@ -9,20 +9,25 @@ const Robot = require("./Robot.js");
 // launch mqtt server
 // $ /usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
 const mqtt = require('mqtt');
-const client = mqtt.connect('mqtt://localhost', { clientId: "navigation-server" });
-var _this = this;
+const client = mqtt.connect('mqtt://localhost', { clientId: Constants.ClientId });
+
+console.log("Starting Navigation Server");
 
 client.on('connect', function () {
+    console.log("Connected to MQTT server as: " + Constants.ClientId);
     client.subscribe('cv-channel');
-    client.subscribe('robot-1');
-    publishShit();
+    // client.subscribe('robot-1');
 });
 
 client.on('message', function (topic, message) {
-    // message is Buffer 
-    console.log("received message");
+    // message is a Buffer array 
+    console.log('\n');
+    console.log("received message for topic: " + topic);
     console.log(message.toString());
-    // handleOpenCV(message.toString());
+    console.log('\n');
+    
+    if (topic.toString() == Constants.OpenCvChannel) 
+        handleOpenCV(message.toString());
 });
 
 const boundary = new Boundary(Constants.BoundaryJsonObject);
@@ -44,11 +49,17 @@ for (var i = 1; i <= numberOfRobots; i++) {
     /* the robot to be configured. 
     *  the relative index of the robot (i.e bot one will work most left section, etc) 
     *  the total number of robots in the field */ 
-    navigationController.configureRobotStart(robot, i-1, numberOfRobots);
+    navigationController.configureRobot(robot, i-1, numberOfRobots);
     navigationController.addRobot(robot);
+    robot.start();
 }
 
 function handleOpenCV(payload) {
+    
+    // if it hasn't been initialized, try again in 1000ms
+    if (navigationController.robots.length < 1) {
+        setTimeout(handleOpenCV, 1000);
+    }
 
     var regex = new RegExp("'", 'g');
     payload = payload.replace(regex, '"');
@@ -88,24 +99,46 @@ function handleOpenCV(payload) {
 
         // add this current point to robots paths
         robotInSytem.updateLocation(robotCurrentCoordinate);
-        robotInSytem.addPointTraveled(robotCurrentCoordinate);
+        if (robotInSytem.jobComplete) return;
 
         // calculate correction
-        var distanceToGoal = robotInSytem.DistanceToGoal;
+        var distanceToGoal = robotInSytem.DistanceToGoalCms;
         var angleToGoal = robotInSytem.AngleToGoal; // zero - 360 degrees
+
+        console.log("robotInSytem.location.relativeCoordinates");
+        console.log(robotInSytem.location.relativeCoordinates);
+
+        console.log("this.goalCoordinate.relativeCoordinates");
+        console.log(robotInSytem.goalCoordinate.relativeCoordinates);
+
+        console.log("angleToGoal");
+        console.log(angleToGoal);
 
         // positive angle, robot goes right
         // negative angle, robot goes left
-        var robotRelativeAngleToGoal = angleToGoal - robotInField.angle;
+        var robotFieldAngleAdjusted = (-robotInField.angle + 90) 
+
+
+        var robotRelativeAngleToGoal = robotFieldAngleAdjusted - angleToGoal;
+
+        if (robotRelativeAngleToGoal < -180) robotRelativeAngleToGoal += 360;
+        if (robotRelativeAngleToGoal > 180) robotRelativeAngleToGoal -= 360;
+
+
+        console.log("robotInField.angle");
+        console.log(robotInField.angle);
+        console.log("robotRelativeAngleToGoal");
+        console.log(robotRelativeAngleToGoal);
 
         var messageToRobot = {
-            "distanceToGoal": distanceToGoal,
             "angleToGoal": robotRelativeAngleToGoal,
+            "distanceToGoal": distanceToGoal,
             "permissionToMove": checkPermissionToMove(),
             "time": Date.now()
         }
 
         var robotChannel = "robot-" + robotInField.uid;
+        console.log('\n');
         console.log("publishing to " + robotChannel);
         console.log(JSON.stringify(messageToRobot));
         var options = {

@@ -11,17 +11,32 @@ class Robot {
         this.location = new Coordinate(-1, -1);
         this.startingLocation = new Coordinate(-1, -1);
         this.startingAlley = 0;
-        this.currentAlley = 0;
+        this.currentAlley = -1;
         this.startedAtBottom = false;
         this.changingAlleys = false;
-        this.isInitializing = true;
         this.endingAlley = -1;
 
         this.goalCoordinate = new Coordinate(-1, -1);
+        this.jobComplete = false;
 
         this.pointsTraveled = [];
 
         this.redisClient = null;
+    }
+
+    /**
+     * Initializing the robot for job
+     * 
+     * Sets the robot goal to bottom of starting alley. 
+     * Sets changingAlleys to true as it gets to the alley
+     * Sets jobComplete to false as its just beginning!
+    **/
+    start() {
+        this.currentAlley = this.startingAlley;
+        this.goalCoordinate = this.navigationController.alleys[this.startingAlley].start;
+        this.changingAlleys = true;
+        this.jobComplete = false;
+        this.startedAtBottom = true;
     }
 
     /**
@@ -35,10 +50,17 @@ class Robot {
         // check if robot is at Goal location and update
         if (this.DistanceToGoalCms < Constants.AllowedDistanceErrorCms) {
 
+            console.log("updating location");
+
             // if was not changing alleys, it has reached end of alley and
             // must set next alley as goal
             if (!this.changingAlleys) {
                 const nextAlleyId = this.currentAlley + 1;
+
+                if (nextAlleyId > this.endingAlley.id) {
+                    this.jobComplete = true;
+                    return false;
+                }
                 var nextAlley = this.navigationController.alleys[nextAlleyId];
                 this.currentAlley = nextAlley;
 
@@ -51,16 +73,17 @@ class Robot {
                     this.goalCoordinate = nextAlley.start;
                     this.startedAtBottom = true;
                 }
-            } 
+            }
             // else robot just reached the start of its alley, goal is the end
             else {
                 if (this.startedAtBottom) {
-                    this.goalCoordinate = this.currentAlley.end;
+                    this.goalCoordinate = this.navigationController.alleys[this.currentAlley].end;
                 } else {
-                    this.goalCoordinate = this.currentAlley.start;
+                    this.goalCoordinate = this.navigationController.alleys[this.currentAlley].start;
                 }
             }
         }
+        return true;
     }
 
     /**
@@ -101,7 +124,7 @@ class Robot {
 
     get AngleToGoal() {
         var angleToGoal = Coordinate.angle(this.location, this.goalCoordinate);
-        if (angleToGoal < 0) angleToGoal += 360;
+        // if (angleToGoal < 0) angleToGoal += 360;
         return angleToGoal
     };
 };

@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = Object.freeze({
+    ClientId: 'navigation-server',
     OpenCvChannel: 'cv-channel',
     BoundaryConfigChannel: 'map-configuration',
     SystemNotificationChannel: 'system-updates',
@@ -14,12 +15,12 @@ module.exports = Object.freeze({
     BoundaryJsonObject: {
         corners: {
             topLeft: {
-                x: 0,
+                x: 10,
                 y: 300
             },
             bottomLeft: {
-                x: 0,
-                y: 0
+                x: 10,
+                y: 10
             },
             topRight: {
                 x: 600,
@@ -31,8 +32,8 @@ module.exports = Object.freeze({
             }
         },
         mapFidicual: {
-            x: 18,
-            y: 40
+            x: 10,
+            y: 10
         }
     }
 });

@@ -31,11 +31,30 @@ class Coordinate {
     }
 
     /**
-    * @param {Coordinate} a a point to be compared
-    * @param {Coordinate} b the other point to be compared 
+    * @param {Coordinate} a a point to be compared (robot)
+    * @param {Coordinate} b the other point to be compared (goal) 
     */
     static angle(a, b) {
-        return Math.atan2(b.relativeY- a.relativeY, b.relativeX - a.relativeX) * 180 / Math.PI;
+
+        var diffY = b.relativeY- a.relativeY;
+        var diffX = b.relativeX- a.relativeX;
+
+        return Math.atan2(diffY, diffX) * 180 / Math.PI;
+
+        // robot is to right and above
+        if (diffX < 0 && diffY < 0){
+            return Math.atan(diffY, diffX) * 180 / Math.PI;
+        } // else to right and below
+        else if (diffX < 0 && diffY > 0 ) {
+            return Math.atan(diffY, diffX) * 180 / Math.PI + 180;
+        } // else left and above
+        else if (diffX > 0 && diffY < 0 ) {
+            return Math.atan(diffY, diffX) * 180 / Math.PI + 180;
+        } // else to left and below
+        else if (diffX > 0 && diffY > 0 ) {
+            return Math.atan(diffY, diffX) * 180 / Math.PI;
+        }
+
     }
 
     toString() {
