@@ -10,7 +10,7 @@ class MarkerMetaData:
     def __init__(self, id, center, rotation):
         self.id = id
         self.x = center[0]
-        self.y = center[1]
+        self.y = 1080 - center[1]
         self.rotation = rotation
 
 '''
@@ -74,15 +74,28 @@ def on_connect(client, userdata, flags, rc):
     global loop_flag
     print("HEY")
     loop_flag=0
+
+def on_message(client, userdata, msg):
+    print("recieved message")
+    print(str(msg.payload))
+    parsed = json.loads(str(msg.payload))
+    x=parsed['x']
+    y=parsed['y']
+    global globTuple
+    globTuple = (x,y)
+
 '''
 ---------------------Main start-------------------------
 '''
+globTuple = (0,0)
 if __name__ == "__main__":
     #------------Init redis connection------------
     mqttc = mqtt.Client("python_pub")
-    #mqttc.connect("::1", 1883, 60)
-    #mqttc.onconnect=on_connect
-    #mqttc.loop(2)
+    mqttc.connect("::1", 1883, 60)
+    mqttc.onconnect=on_connect
+    mqttc.on_message = on_message
+    mqttc.subscribe("nav-channel", 0)
+    mqttc.loop(2)
 
     # loop_flag=1
     # counter=0
@@ -127,8 +140,9 @@ if __name__ == "__main__":
         # Our operations on the frame come here
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # apply adaptive histogram
-        gray = clahe.apply(gray)
-        frame = gray
+        # gray = clahe.apply(gray)
+        gray = cv2.equalizeHist(gray)
+        # frame = gray
         aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
         parameters =  aruco.DetectorParameters_create()
 
@@ -149,6 +163,18 @@ if __name__ == "__main__":
 
                 roationText = "Rotation: "+ str(rotation)
                 cv2.putText(frame, roationText, center, cv2.FONT_HERSHEY_SIMPLEX, 1,(0,0,255),2)
+                
+                if curId == 0:
+                    xText = "o"
+                    textCenter = (int(center[0] + globTuple[0] - 20), int(center[1]-  globTuple[1]))
+                    print("text center")
+                    print(textCenter)
+                    print("fiducial center")
+                    print(center)
+                    print("globTuple center")
+                    print(globTuple)
+                    cv2.putText(frame, xText, textCenter, cv2.FONT_HERSHEY_SIMPLEX, 2,(0,255,0),25)
+
             if(len(markers) > 0):
                 #only go through the drawing if we found any markers
                 #if(len(markers) > 0):
@@ -165,12 +191,15 @@ if __name__ == "__main__":
                 
         #print(rejectedImgPoints)
         # Display the resulting frame
+
+
+        frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
         cv2.imshow('frame',frame)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
 
         #check for escape
-        if(cv2.waitKey(100) == 27):
+        if(cv2.waitKey(50) == 27):
             break
 
             
