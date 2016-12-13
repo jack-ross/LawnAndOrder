@@ -140,8 +140,9 @@ if __name__ == "__main__":
         # Our operations on the frame come here
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # apply adaptive histogram
-        # gray = clahe.apply(gray)
-        gray = cv2.equalizeHist(gray)
+        gray = clahe.apply(gray)
+        # gray = cv2.equalizeHist(gray)
+        # frame = gray
         # frame = gray
         aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
         parameters =  aruco.DetectorParameters_create()
@@ -153,6 +154,9 @@ if __name__ == "__main__":
             markers = []
             for i in xrange(len(ids)):
                 curId = ids[i][0]
+
+                if(curId == 49):
+                    curId = 0
                 if(curId != 1 and curId != 49 and curId != 0):
                     continue
                 curCorners = corners[i][0]
@@ -193,7 +197,7 @@ if __name__ == "__main__":
         # Display the resulting frame
 
 
-        frame = cv2.resize(frame, (0,0), fx=0.7, fy=0.7)
+        frame = cv2.resize(frame, (0,0), fx=0.8, fy=0.8)
         cv2.imshow('frame',frame)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break

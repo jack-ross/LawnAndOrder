@@ -21,15 +21,15 @@ module.exports = Object.freeze({
             },
             bottomLeft: {
                 x: 10,
-                y: 100
+                y: 120
             },
             topRight: {
-                x: 600,
+                x: 700,
                 y: 700
             },
             bottomRight: {
-                x: 600,
-                y: 100
+                x: 700,
+                y: 120
             }
         },
         mapFidicual: {
