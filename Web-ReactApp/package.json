@@ -10,7 +10,11 @@
     "mqtt": "^2.1.3",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",
-    "react-dom": "^15.4.1"
+    "react-dimensions": "^1.3.0",
+    "react-dom": "^15.4.1",
+    "react-three": "^0.9.6",
+    "react-three-renderer": "^3.0.0",
+    "three": "^0.74.0"
   },
   "scripts": {
     "start": "react-scripts start",

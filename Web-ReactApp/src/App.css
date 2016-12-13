@@ -1,53 +1,62 @@
 .App {
-  /*text-align: center;*/
+    /*text-align: center;*/
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 10s linear;
-  height: 25px;
-  margin-top: 5px;
+    animation: App-logo-spin infinite 10s linear;
+    height: 40px;
+    margin-top: 5px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 65px;
-  padding: 5px 15px;
-  color: white;
+    background-color: rgba(0, 0, 0, .025);
+    height: 65px;
+    padding: 5px 15px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    
 }
 
 .App-header h1 {
-  margin-top: 5px;
-  font-size: 30px;
-  padding-top: 0px;
-  font-weight: 300;
+    margin-top: 5px;
+    font-size: 30px;
+    padding-top: 0px;
+    font-weight: 300;
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .container {
-  width: 100%;
+    width: 100%;
+}
+
+.map {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
 }
 
 .stats-col {
-  background-color: #222;
-  min-height: calc(100vh);
-  padding: 10px 15px;
+    background-color: rgba(0, 0, 0, .025);
+    min-height: calc(100vh);
+    padding: 10px 15px;
 }
 
 .card {
-  margin: auto;
+    margin: auto;
 }
 
 .stats-col .card {
-  max-height: 230px;
-  margin: 10px 5px;
+    max-height: 230px;
+    margin: 10px 5px;
 }
 
 .main-col {
-  background-color: rgba(0,0,255,0.2);
-  min-height: calc(100vh);
-  box-shadow: 0px 0px 10px white;
+    min-height: calc(100vh);
 }
