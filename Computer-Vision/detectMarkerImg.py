@@ -85,7 +85,7 @@ def getJsonMessage(markersArray):
 ---------------------Main start-------------------------
 '''
 if __name__ == "__main__":
-	frame = cv2.imread("test_tilt.png", 1)
+	frame = cv2.imread("new_1.jpg", 1)
 
 	# Our operations on the frame come here
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)

@@ -89,7 +89,7 @@ def on_message(client, userdata, msg):
 '''
 globTuple = (0,0)
 if __name__ == "__main__":
-    #------------Init redis connection------------
+    #------------Init MQTT connection on local host------------
     mqttc = mqtt.Client("python_pub")
     mqttc.connect("::1", 1883, 60)
     mqttc.onconnect=on_connect
@@ -97,21 +97,7 @@ if __name__ == "__main__":
     mqttc.subscribe("nav-channel", 0)
     mqttc.loop(2)
 
-    # loop_flag=1
-    # counter=0
-    # while loop_flag == 1:
-    #     print(counter)
-    #     time.sleep(.01)
-    #     counter+=1
-
     channelName = "cv-channel"  
-
-    # the publish method returns the number matching channel and pattern
-    # subscriptions. 'my-first-channel' matches both the 'my-first-channel'
-    # subscription and the 'my-*' pattern subscription, so this message will
-    # be delivered to 2 channels/patterns
-    #r.publish('my-first-channel', 'some data')
-
 
     ##------------Init computer vison------------
     cap = cv2.VideoCapture(1)
@@ -191,11 +177,9 @@ if __name__ == "__main__":
                 mqttc.publish(channelName, str(markerJsonMsg))
                 mqttc.loop(2)
                 print(markerJsonMsg)
-
                 
         #print(rejectedImgPoints)
         # Display the resulting frame
-
 
         frame = cv2.resize(frame, (0,0), fx=0.8, fy=0.8)
         cv2.imshow('frame',frame)

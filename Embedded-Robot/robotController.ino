@@ -1,7 +1,7 @@
 /*
 
   Low power motor control pin out
-  incoreperates sonar, MQQT, and PID controller to move
+  incorperates sonar, MQTT, and PID controller to move
 
 */
 //----------------MQTT server configs----------------
@@ -33,7 +33,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   // Test if parsing succeeds.
   if (!root.success()) {
     Serial.println("parseObject() failed");
-//    client.publish("robot-channel-1", "failed parse command");
+    //client.publish("robot-channel-1", "failed parse command");
     return;
   }
   
@@ -58,10 +58,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(curMsgRecvTime);
 }
 
-
 WiFiClient wifiClient;
 PubSubClient client(server, 1883, callback, wifiClient);
-
 
 //----------------Motor and Encoders Pins----------------
 //IN1 and 2 should go to the right motor
@@ -136,22 +134,13 @@ float var2 = 0; //varience
 void setup() {
   Serial.begin(115200);
   //  delay(100);
-  Serial.println("seteup");
+  Serial.println("Setup");
   initPins();
   Serial.println("Pins");
   connectWifi();
   Serial.println("Wifi");
 }
 
-  /* //the variables below are temps
-   float distance = 22.8; //new distance fromk nav
-   if (first) {
-     angleToGoal = 30;//new angle from nav
-     first = false;
-   } else {
-     angleToGoal = 0;
-   }
-   */
 /////////////////////////////////////////////////////////////////////
 void getNextMsg(){
   client.publish("robot-ack-1", "ACK");
@@ -166,8 +155,7 @@ void loop() {
   updateMQTT();
   
    getNextMsg();
-//     analogWrite(motorR_forward, 0);
-//    analogWrite(motorL_forward, 0);
+
   //if the distance to goal is > 5 cm we will wait for the next goal
   if(abs(angleToGoal) > 30){
     //we want some time for the system to send us more data
@@ -244,32 +232,20 @@ bool updateMQTT() {
       }
     }
   }
-  //TODO: do we want to send anything back?
-//  if (client.publish("robot-channel", "hello world")) {
-//    //Serial.println("Publish success");
-//  } else {
-//    Serial.println("Publish failed");
-//  }
-
-  // Check if any message were received
-  // on the topic we subsrcived to
-//  client.poll();
-  //TODO: do we need a delay?
-  //  delay(1000);
 }
 
 /////////////////////////////////////////////////////////////////////
 //This will stoop once the robot travels distance (cm)
 void move(){ //Dist(float distance, float angle) {
-//probably dont need this
-  //we will have checked the messaage queue at this point (rigt before this)
-//  while (read_sensors() || !permissionToMove) { // don't move while objected is detected
-//    Serial.println("NOT MOVING");
-//    analogWrite(motorL_forward, 0);
-//    analogWrite(motorR_forward, 0);
-//      client.poll();
-//  }
-Serial.println("moving");
+  //probably dont need this
+    //we will have checked the messaage queue at this point (rigt before this)
+  //  while (read_sensors() || !permissionToMove) { // don't move while objected is detected
+  //    Serial.println("NOT MOVING");
+  //    analogWrite(motorL_forward, 0);
+  //    analogWrite(motorR_forward, 0);
+  //      client.poll();
+  //  }
+  Serial.println("moving");
   
   //input will be encoder turns
   float ticksToMove;//, totalTicks = 0;
@@ -296,9 +272,10 @@ Serial.println("moving");
     Serial.print("\tR: ");
     Serial.println(ticksR);
     //at the beggining of every loop we want to poll the client
-//    if(totalTicks % 2000 == 0 && totalTicks != 0){
+    //    if(totalTicks % 2000 == 0 && totalTicks != 0){
     if((ticksRcheck % 2000 == 0  || ticksLcheck % 2000 == 0 )  && totalTicks != 0){
-
+        // TODO: these are set to TicksR and TicksL, but those are not reset in the callback
+      //maybe get rid of the totalTicks != 0 too..
        getNextMsg();
     }
        //angle threshold
@@ -357,10 +334,6 @@ Serial.println("moving");
 
   ticksRcheck = 0;
   ticksLcheck = 0;
-  // TODO:
-  //we have travelled the distance we need. wait until next goal
-//  analogWrite(motorL_forward, 0);
-//  analogWrite(motorR_forward, 0);
 }
 
 /////////////////////////////////////////////////////////////////////
