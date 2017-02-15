@@ -1,0 +1,13 @@
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D OPENCV_EXTRA_MODULES_PATH=/Users/mcruiters/opencv_contrib/modules \
+    -D PYTHON2_PACKAGES_PATH=$VIRTUAL_ENV/lib/python2.7/site-packages \
+    -D PYTHON2_LIBRARY=//Users/mcruiters/.pyenv/versions/2.7.10/bin \
+    -D PYTHON2_INCLUDE_DIR=/Users/mcruiters/.pyenv/versions/2.7.10/include/python2.7/ \
+    -D PYTHON2_EXECUTABLE=$VIRTUAL_ENV/bin/python \
+    -D BUILD_opencv_python2=ON \
+    -D BUILD_opencv_python3=OFF \
+    -D INSTALL_PYTHON_EXAMPLES=ON \
+    -D INSTALL_C_EXAMPLES=OFF \
+    -D BUILD_EXAMPLES=ON ..
