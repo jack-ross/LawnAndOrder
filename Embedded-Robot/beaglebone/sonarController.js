@@ -1,7 +1,9 @@
 "use strict";
+var bone = require('bonescript');
 
 // variables for sensor 2
 // const int anPin1 = 6; // Left Sensor
+// var anPin1 = "P9_38";
 var distance1;
 var sensorBuffer1[8];
 var runningSum1;
@@ -11,6 +13,7 @@ var var1 = 0; //variance
 
 // variables for sensor 2
 // const int anPin2 = 24; // Right Sensor
+// var anPin2 = "P9_40";
 var distance2;
 var sensorBuffer2[8];
 var runningSum2;
@@ -18,11 +21,14 @@ var runningAverage2;
 var inputValue2;
 var var2 = 0; //varience
 
-var bone = require('bonescript');
+// Generic variables
+var i = 0;
+var n = 8;
+var prev = 0;
 
 // public class Sensor extends Initialize {
 
-bool read_sensors() {
+function read_sensors() {
 
   // Sonar Sensor 1 Data
   distance1 = bone.analogRead(anPin1) / 20; // Read Left Sensor Data
