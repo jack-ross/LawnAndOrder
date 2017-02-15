@@ -1,12 +1,12 @@
-var ECODER_AR = "P8_8";
-var ENCODER_BR = "P8_10";
-var motorR_forward = "P9_33";
-var motorR_reverse = "P9_35";
+var ECODER_AR = "P8_12";
+var ENCODER_BR = "P8_14";
+var motorR_forward = "P9_45";
+var motorR_reverse = "P9_46";
 
-var ECODER_AL = "P8_12";
-var ENCODER_BL = "P8_14";
-var motorL_forward = "P9_37";
-var motorL_reverse = "P9_39";
+var ECODER_AL = "P8_16";
+var ENCODER_BL = "P8_18";
+var motorL_forward = "P9_34";
+var motorL_reverse = "P9_36";
 
 
 
