@@ -5,7 +5,7 @@ var bone = require('bonescript');
 // const int anPin1 = 6; // Left Sensor
 // var anPin1 = "P9_38";
 var distance1;
-var sensorBuffer1[8];
+var sensorBuffer1 = new Array(8);
 var runningSum1;
 var runningAverage1;
 var inputValue1;
@@ -15,7 +15,7 @@ var var1 = 0; //variance
 // const int anPin2 = 24; // Right Sensor
 // var anPin2 = "P9_40";
 var distance2;
-var sensorBuffer2[8];
+var sensorBuffer2 = new Array(8);
 var runningSum2;
 var runningAverage2;
 var inputValue2;
