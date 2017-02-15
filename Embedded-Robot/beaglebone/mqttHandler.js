@@ -1,19 +1,17 @@
 "use strict";
 
-var b = require('bonescript');
-var led = "USR3";
-var state = 0;
-
-b.pinMode(led, 'out');
-toggleLED = function() {
-    state = state ? 0 : 1;
-    b.digitalWrite(led, state);
-};
-
-timer = setInterval(toggleLED, 100);
-
-stopTimer = function() {
-    clearInterval(timer);
-};
-
-setTimeout(stopTimer, 3000);
+const constants = require("./constants.js");
+var mqtt = require('mqtt')
+var client  = mqtt.connect('mqtt://test.mosquitto.org')
+ 
+client.on('connect', function () {
+  client.subscribe('presence')
+  client.publish('presence', 'Hello mqtt')
+})
+ 
+client.on('message', function (topic, message) {
+  // message is Buffer 
+  console.log(message.toString())
+  console.log(message.toString() + " " + constants.ClientId)
+  client.end()
+})

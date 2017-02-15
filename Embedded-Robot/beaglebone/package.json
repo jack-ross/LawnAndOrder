@@ -1,0 +1,15 @@
+{
+  "name": "beaglebone",
+  "version": "1.0.0",
+  "description": "Code for operating lawn and order robots via the beaglebone black",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jack Ross, Matt Ruiters, Brett Parsons",
+  "license": "ISC",
+  "dependencies": {
+    "bonescript": "^0.5.1",
+    "mqtt": "^2.4.0"
+  }
+}

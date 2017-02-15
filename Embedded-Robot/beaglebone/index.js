@@ -1,5 +1,6 @@
 "use strict";
 
-var bone = require('bonescript');
+var bone = require('octalbonescript');
+const constants = require("./constants.js");
 
 // handle incorporating all components
