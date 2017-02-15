@@ -1,4 +1,5 @@
 "use strict";
+var bone = require('bonescript');
 
 // variables for sensor 2
 // const int anPin1 = 6; // Left Sensor
@@ -20,7 +21,10 @@ var runningAverage2;
 var inputValue2;
 var var2 = 0; //varience
 
-var bone = require('bonescript');
+// Generic variables
+var i = 0;
+var n = 8;
+var prev = 0;
 
 // public class Sensor extends Initialize {
 
