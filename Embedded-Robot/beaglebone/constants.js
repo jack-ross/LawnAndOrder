@@ -36,5 +36,15 @@ module.exports = Object.freeze({
             x: 1,
             y: 1
         }
-    }
+    },
+    ECODER_AR : "P8_8";
+    ENCODER_BR : "P8_10";
+    motorR_forward : "P9_33";
+    motorR_reverse : "P9_35";
+    ECODER_AL : "P8_12";
+    ENCODER_BL : "P8_14";
+    motorL_forward : "P9_37";
+    motorL_reverse : "P9_39";
+
+
 });
